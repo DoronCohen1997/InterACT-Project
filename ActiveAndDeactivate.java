@@ -1,5 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.NoSuchElementException;
+
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -157,7 +159,7 @@ class ActiveAndDeactivate {
 		Thread.sleep(1000);
 		driver.findElement(By.xpath("//*[text()=' Doron Cohen ']")).click();
 		Thread.sleep(2000);
-		for(int i=1; i<=5; i++){
+		for(int i=1; i<=500; i++){
 			driver.findElement(By.xpath("//*[@class='svg-user-dims']")).click();
 			Thread.sleep(2000);
 			driver.findElement(By.xpath("//*[@class='svg-supervisor-dims']")).click();
@@ -571,20 +573,202 @@ class ActiveAndDeactivate {
 			Thread.sleep(1000);
 			
 			for(int i=1; i<=1000; i++){
+				Thread.sleep(2000);
 				driver.findElement(By.xpath("//*[text()='New Profile']")).click();
 				Thread.sleep(2000);
-				driver.findElement(By.xpath("/html/body/portal-root/portal-home-layout/div[3]/div[2]/profile-create/div/div[2]/profile-info/div/div[1]/mcr-input-text/div/div/input")).sendKeys("Gila"+i+"");
+				driver.findElement(By.xpath("/html/body/portal-root/portal-home-layout/div[3]/div[2]/profile-create/div/div[2]/profile-info/div/div[1]/mcr-input-text/div/div/input")).sendKeys("Sigal"+i+"");
 				Thread.sleep(2000);
-				driver.findElement(By.xpath("/html/body/portal-root/portal-home-layout/div[3]/div[2]/profile-create/div/div[2]/profile-info/div/div[2]/mcr-input-text/div/div/input")).sendKeys("Cohen");
+				driver.findElement(By.xpath("/html/body/portal-root/portal-home-layout/div[3]/div[2]/profile-create/div/div[2]/profile-info/div/div[2]/mcr-input-text/div/div/input")).sendKeys("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 				Thread.sleep(2000);
 				driver.findElement(By.xpath("//*[text()='Save']")).click();
-				Thread.sleep(2000);
+				Thread.sleep(5000);
 		
 			}
 			
 				driver.close();
 			}
-	
+		
+		//this Test Verify that error Message display after enter 64 characters to name field in profile section.
+		@Test
+		void test12() throws Exception {
+			System.setProperty("webdriver.chrome.driver", "C:\\Automation\\Drivers\\chromedriver.exe");
+	        WebDriver driver = new ChromeDriver();
+	        driver.manage().window().maximize();
+	        String ProfileErrorMessage = "Your entry is too long";
+			driver.get("http://10.128.58.7/web/#/users");
+			Thread.sleep(4000);
+			driver.findElement(By.id("username")).sendKeys("nice");
+			driver.findElement(By.id("password")).sendKeys("nicecti1!");
+			driver.findElement(By.xpath("//*[@id='kc-login']")).click();
+			Thread.sleep(5000);
+						
+			driver.findElement(By.xpath("//*[text()='Profiles']")).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("//*[text()='New Profile']")).click();
+			Thread.sleep(2000);
+			driver.findElement(By.xpath("/html/body/portal-root/portal-home-layout/div[3]/div[2]/profile-create/div/div[2]/profile-info/div/div[1]/mcr-input-text/div/div/input")).sendKeys("robenrobenrobenrobenrobenrobenrobenrobenrobenrobenrobenrobenroben");
+			Thread.sleep(3000);
+			driver.findElement(By.xpath("//*[text()='Save']")).click();
+			Thread.sleep(2000);
+			String ResultTooLong = driver.findElement(By.xpath("//*[contains(text(),' Your entry is too long')]")).getText();
+			Thread.sleep(1000);
+		
+			try {
+				if (ResultTooLong.contentEquals(ProfileErrorMessage)){
+				Assert.assertEquals(ResultTooLong, ProfileErrorMessage);
+				System.out.println("Test Passed!");
+				assertTrue(true);
+				}
+				
+				else {
+	            System.out.println("Test Failed");
+	            assertTrue(true);
+				driver.close();
+				}
+			  }
+			catch (Exception e) {
+				 System.out.println(e.getMessage());
+		        }
+			
+				driver.close();
+			}
+		
+		//this Test Verify that error Message display after enter 256 characters to description field in profile section.
+				@Test
+				void test13() throws Exception {
+					System.setProperty("webdriver.chrome.driver", "C:\\Automation\\Drivers\\chromedriver.exe");
+			        WebDriver driver = new ChromeDriver();
+			        driver.manage().window().maximize();
+			        String ProfileErrorMessageDes = "Your entry is too long";
+					driver.get("http://10.128.58.7/web/#/users");
+					Thread.sleep(4000);
+					driver.findElement(By.id("username")).sendKeys("nice");
+					driver.findElement(By.id("password")).sendKeys("nicecti1!");
+					driver.findElement(By.xpath("//*[@id='kc-login']")).click();
+					Thread.sleep(5000);
+								
+					driver.findElement(By.xpath("//*[text()='Profiles']")).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//*[text()='New Profile']")).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("/html/body/portal-root/portal-home-layout/div[3]/div[2]/profile-create/div/div[2]/profile-info/div/div[1]/mcr-input-text/div/div/input")).sendKeys("roben");
+					Thread.sleep(3000);
+					driver.findElement(By.xpath("/html/body/portal-root/portal-home-layout/div[3]/div[2]/profile-create/div/div[2]/profile-info/div/div[2]/mcr-input-text/div/div/input")).sendKeys("dodododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododododoj");
+					Thread.sleep(3000);
+					driver.findElement(By.xpath("//*[text()='Save']")).click();
+					Thread.sleep(2000);
+					String ResultTooLongDes = driver.findElement(By.xpath("//*[contains(text(),' Your entry is too long')]")).getText();
+					Thread.sleep(1000);
+					
+				try {
+					if (ResultTooLongDes.contentEquals(ProfileErrorMessageDes)){
+						Assert.assertEquals(ResultTooLongDes, ProfileErrorMessageDes);
+						System.out.println("Test Passed!");
+						assertTrue(true);
+						}
+					else {
+						System.out.println("Test Failed");
+						assertTrue(true);
+						driver.close();
+						}
+					} 
+				catch (Exception e) {
+					 System.out.println(e.getMessage());
+			        }
+					
+					driver.close();
+					}
+				
+				@Test
+				void test14() throws Exception {
+					System.setProperty("webdriver.chrome.driver", "C:\\Automation\\Drivers\\chromedriver.exe");
+			        WebDriver driver = new ChromeDriver();
+			        driver.manage().window().maximize();
+					driver.get("http://10.128.58.7/web/#/users");
+					Thread.sleep(4000);
+					driver.findElement(By.id("username")).sendKeys("nice");
+					driver.findElement(By.id("password")).sendKeys("nicecti1!");
+					driver.findElement(By.xpath("//*[@id='kc-login']")).click();
+					Thread.sleep(5000);
+								
+					driver.findElement(By.xpath("//*[text()='Profiles']")).click();
+					Thread.sleep(2000);
+					driver.findElement(By.xpath("//*[text()='New Profile']")).click();
+					Thread.sleep(2000);
+
+					for(int i=1; i<=2; i++){
+					driver.findElement(By.xpath("//*[contains(@title, 'Interactions')]")).click();
+					Thread.sleep(1000);
+					if(!driver.findElements(By.xpath("//*[text()='Delete public queries']")).isEmpty()){
+						System.out.println("Test Passed");
+				    }else{
+				    	System.out.println("Test Failed");
+				    }
+					if(!driver.findElements(By.xpath("//*[text()='Create public queries']")).isEmpty()){
+						System.out.println("Test Passed");
+				    }else{
+				    	System.out.println("Test Failed");
+				    }
+					driver.findElement(By.xpath("//*[contains(@title, 'Player')]")).click();
+					Thread.sleep(1000);
+					if(!driver.findElements(By.xpath("//*[text()='Play voice segment']")).isEmpty()){
+						System.out.println("Test Passed");
+				    }else{
+				    	System.out.println("Test Failed");
+				    }
+					driver.findElement(By.xpath("//*[contains(@title, 'User Admin')]")).click();
+					Thread.sleep(1000);
+					if(!driver.findElements(By.xpath("//*[text()='Enable User Admin']")).isEmpty()){
+						System.out.println("Test Passed");
+				    }else{
+				    	System.out.println("Test Failed");
+				    }
+					driver.findElement(By.xpath("//*[contains(@title, 'Recording Policies')]")).click();
+					Thread.sleep(1000);
+					if(!driver.findElements(By.xpath("//*[text()='Enable Recording Policies']")).isEmpty()){
+						System.out.println("Test Passed");
+				    }else{
+				    	System.out.println("Test Failed");
+				    }
+					driver.findElement(By.xpath("//*[contains(@title, 'Compliance Policies')]")).click();
+					Thread.sleep(1000);
+					if(!driver.findElements(By.xpath("//*[text()='Enable Compliance Policies']")).isEmpty()){
+						System.out.println("Test Passed");
+				    }else{
+				    	System.out.println("Test Failed");
+				    }
+					driver.findElement(By.xpath("//*[contains(@title, 'Call Extractor')]")).click();
+					Thread.sleep(1000);
+					if(!driver.findElements(By.xpath("//*[text()='Enable Call Extractor']")).isEmpty()){
+						System.out.println("Test Passed");
+				    }else{
+				    	System.out.println("Test Failed");
+				    }
+					driver.findElement(By.xpath("//*[contains(@title, 'Platform Admin')]")).click();
+					Thread.sleep(1000);
+					if(!driver.findElements(By.xpath("//*[text()='Enable Platform Admin']")).isEmpty()){
+						System.out.println("Test Passed");
+				    }else{
+				    	System.out.println("Test Failed");
+				    }
+					driver.findElement(By.xpath("//*[contains(@title, 'Playback Portal')]")).click();
+					Thread.sleep(1000);
+					if(!driver.findElements(By.xpath("//*[text()='Enable Playback Portal']")).isEmpty()){
+						System.out.println("Test Passed");
+				    }else{
+				    	System.out.println("Test Failed");
+				    }
+					driver.findElement(By.xpath("//*[contains(@title, 'Quality Central')]")).click();
+					Thread.sleep(1000);
+					if(!driver.findElements(By.xpath("//*[text()='Enable Quality Central']")).isEmpty()){
+						System.out.println("Test Passed");
+				    }else{
+				    	System.out.println("Test Failed");
+				    }
+					}
+					driver.close();
+				}
+		
 	}
 	
 	
